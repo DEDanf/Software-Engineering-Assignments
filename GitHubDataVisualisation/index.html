@@ -1,3 +1,7 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
 <html>
 
 	<head>
@@ -20,10 +24,36 @@
 		</p>
 
 		<div id = "visualization" ></div>
-		
+
 		</div>
 
 	</body>
+
+	<script type="text/javascript" src="Javascript/d3/d3.js"></script>
+	<script type="text/javascript" src="Javascript/jquery-3.3.1.js"></script>
+	<script type="text/javascript">
+
+
+		let Contributors;
+		let Commits;
+
+
+
+		$.getJSON('Data/JSONContributors.json', function (json) {
+            console.log(json[0].login);
+            let  a = json[0].login;
+			console.log(a);
+
+        });
+
+
+
+
+	</script>
+
+
+
+
 
 
 </html>

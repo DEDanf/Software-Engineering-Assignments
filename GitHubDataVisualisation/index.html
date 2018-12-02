@@ -25,7 +25,7 @@
 			only 6 members ended up contributing to the project which was maintained using a Github Repository. <br>
 			To create a visualization using other information, simply use the command:
 			'curl -u 'username'  https://api.github.com/repos/username/repo/contributors -o filename' selecting your own username,repo and filename
-			and then insert the file into the Data folder for the project. Once this is done just make sure the .html file is getting the JSON information
+			and then insert the file into the Data folder for the project. Once this is done just make sure the index.html file is getting the JSON information
 			from your file and you are ready to go.
 
 		</p>
@@ -37,7 +37,7 @@
 	<script type="text/javascript" src="Javascript/d3/d3.js"></script>
 	<script type="text/javascript" src="Javascript/jquery-3.3.1.js"></script>
 	<script type="text/javascript" src="Javascript/json2.js"></script>
-	<svg width="500" height="400"> </svg>
+	<svg width="800" height="600"> </svg>
 	<script type="text/javascript">
 
 
@@ -64,6 +64,7 @@
 
 
             var data = Commits;
+			var lables = Contributors;
 
             var svg = d3.select("svg"),
                 width = svg.attr("width"),
@@ -81,21 +82,28 @@
                 .innerRadius(0)
                 .outerRadius(radius);
 
+            var label = d3.arc()
+                .outerRadius(radius)
+                .innerRadius(radius - 80);
+
             var arcs = g.selectAll("arc")
                 .data(pie(data))
                 .enter()
                 .append("g")
                 .attr("class", "arc")
 
-            var label = d3.arc()
-                .outerRadius(radius)
-                .innerRadius(radius - 80);
 
             arcs.append("path")
                 .attr("fill", function(d, i) {
                     return color(i);
                 })
                 .attr("d", arc);
+
+            arcs.append("text")
+                .attr("transform", function(d) {
+                    return "translate(" + label.centroid(d) + ")";
+                })
+                .text(function(d,i) { return lables[i].replace(/"/g,'') });
 
 
 
@@ -106,9 +114,6 @@
 
 
 	</script>
-
-
-
 
 
 

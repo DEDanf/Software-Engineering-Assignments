@@ -5,6 +5,7 @@
 <html>
 
 	<head>
+		<link type="text/css" rel="stylesheet" href="CSS/style.css"/>
 		<title> Visualization of Commits by Contributor </title>
 		<style>
 
@@ -20,10 +21,14 @@
 		<p>
 			This is a visualization as part of my Software Engineering project to visualize an aspect of the Software Engineering process using
 			information retrieved using the Github API. In this example I am using information regarding a repository named 'Nutricode' which was
-			used by me and my programming project team last year to develop an app using NativeScript. In total there were 7 of us on the team however only 6 members ended up contributing to the project which was maintained using a Github Repository.
-		</p>
+			used by me and my programming project team last year to develop an app using NativeScript. In total there were 7 of us on the team however
+			only 6 members ended up contributing to the project which was maintained using a Github Repository. <br>
+			To create a visualization using other information, simply use the command:
+			'curl -u 'username'  https://api.github.com/repos/username/repo/contributors -o filename' selecting your own username,repo and filename
+			and then insert the file into the Data folder for the project. Once this is done just make sure the .html file is getting the JSON information
+			from your file and you are ready to go.
 
-		<div id = "visualization" ></div>
+		</p>
 
 		</div>
 
@@ -31,18 +36,69 @@
 
 	<script type="text/javascript" src="Javascript/d3/d3.js"></script>
 	<script type="text/javascript" src="Javascript/jquery-3.3.1.js"></script>
+	<script type="text/javascript" src="Javascript/json2.js"></script>
+	<svg width="500" height="400"> </svg>
 	<script type="text/javascript">
 
 
-		let Contributors;
-		let Commits;
+		let Contributors = [];
+		let Commits = [];
 
 
 
 		$.getJSON('Data/JSONContributors.json', function (json) {
-            console.log(json[0].login);
-            let  a = json[0].login;
-			console.log(a);
+
+			var temp1;
+			var temp2;
+
+			for (var i =0; i<json.length; i++) {
+
+			    temp1=JSON.stringify((json[i].login));
+			    temp2=(json[i].contributions);
+			    Contributors[i]=temp1;
+			    Commits[i]=temp2;
+
+			   console.log(Commits[i]);
+			}
+
+
+
+            var data = Commits;
+
+            var svg = d3.select("svg"),
+                width = svg.attr("width"),
+                height = svg.attr("height"),
+                radius = Math.min(width, height) / 2,
+                g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+            var color = d3.scaleOrdinal(['#4daf4a','#377eb8','#ff7f00','#984ea3','#e41a1c','#D579B5','#4732F9','#578F36','#AB2A1B','#1A054A',
+										'#BB41B3','#609787','#111228','#DD787E','#5F0703','#243ECB','#F8A0F8','#0D8EF3','#7D4415','#0A3E5C',
+										'#08E69B','#124888','#D2EF9D','#5F1271','#2F43DD','#D0EC08','#B8992B','#6A9E70','#F92127','#0FDF8A']);
+
+            var pie = d3.pie();
+
+            var arc = d3.arc()
+                .innerRadius(0)
+                .outerRadius(radius);
+
+            var arcs = g.selectAll("arc")
+                .data(pie(data))
+                .enter()
+                .append("g")
+                .attr("class", "arc")
+
+            var label = d3.arc()
+                .outerRadius(radius)
+                .innerRadius(radius - 80);
+
+            arcs.append("path")
+                .attr("fill", function(d, i) {
+                    return color(i);
+                })
+                .attr("d", arc);
+
+
+
 
         });
 

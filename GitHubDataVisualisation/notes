@@ -1,49 +1,10 @@
 1.
 Turn JSON information to 2 arrays. 1 array for login names and 1 array for commits
 Use first array for piechart data and second as markers.
+Done
 
 2.
 for piechart colours randomize. use if statement eg. if (x-y < 100 && x-y > -100) {repeat randomization}
 
-3.
-Piechart example code
-<body>
-<svg width="300" height="200"> </svg>
-<script>
-    var data = [2, 4, 8, 10];
-
-    var svg = d3.select("svg"),
-        width = svg.attr("width"),
-        height = svg.attr("height"),
-        radius = Math.min(width, height) / 2,
-        g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-    var color = d3.scaleOrdinal(['#4daf4a','#377eb8','#ff7f00','#984ea3','#e41a1c']);
-
-    // Generate the pie
-    var pie = d3.pie();
-
-    // Generate the arcs
-    var arc = d3.arc()
-                .innerRadius(0)
-                .outerRadius(radius);
-
-    //Generate groups
-    var arcs = g.selectAll("arc")
-                .data(pie(data))
-                .enter()
-                .append("g")
-                .attr("class", "arc")
-
-    //Draw arc paths
-    arcs.append("path")
-        .attr("fill", function(d, i) {
-            return color(i);
-        })
-        .attr("d", arc);
-</script>
-</body>
-
-on link
-http://www.tutorialsteacher.com/d3js/create-pie-chart-using-d3js
+3. Use CSS to improve appearance
 
